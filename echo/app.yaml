@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: echoapp
+  name: echoapp
+  namespace: default
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: echoapp
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: echoapp
+    spec:
+      containers:
+      - image: rajeevpd/echo:latest
+        imagePullPolicy: Always
+        name: echoapp
+        resources: {}
+        ports:
+        - containerPort: 8080
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: echoapp
+  name: echoapp
+  namespace: default
+spec:
+  ports:
+  - name: http
+    nodePort: 32013
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: echoapp
+  type: NodePort
