@@ -28,9 +28,9 @@ spec:
         imagePullPolicy: Always
         env:
         - name: DB_URL
-          value: 192.168.86.60
+          value: "192.168.86.60"
         - name: DB_PORT
-          value: 5342
+          value: "5342"
         name: ddosapp
         resources: {}
         ports:
