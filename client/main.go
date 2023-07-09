@@ -25,7 +25,7 @@ import (
 
 var namespace string = "default"
 
-//GetClient returns a kubernetes client
+// GetClient returns a kubernetes client
 func GetK8sClient(configpath string) (*kubernetes.Clientset, error) {
 	if configpath == "" {
 		logrus.Info("Using Incluster configuration")
@@ -71,12 +71,12 @@ func createDeployment(clientset *kubernetes.Clientset) error {
 					Containers: []v1.Container{
 						{
 							Name:  "web",
-							Image: "rajeevpd/echo:latest",
+							Image: "ealen/echo-server",
 							Ports: []v1.ContainerPort{
 								{
 									Name:          "http",
 									Protocol:      v1.ProtocolTCP,
-									ContainerPort: 8080,
+									ContainerPort: 80,
 								},
 							},
 						},
@@ -117,7 +117,7 @@ func createService(clientset *kubernetes.Clientset) error {
 				v1.ServicePort{
 					Name:       "http",
 					Port:       80,
-					TargetPort: intstr.IntOrString{IntVal: 8080},
+					TargetPort: intstr.IntOrString{IntVal: 80},
 					NodePort:   31080,
 				},
 			},
