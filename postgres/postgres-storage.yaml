@@ -21,6 +21,7 @@ metadata:
   name: postgres-pv-claim
   labels:
     app: postgres
+  namespace: postgres
 spec:
   storageClassName: manual
   accessModes:
