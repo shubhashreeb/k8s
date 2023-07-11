@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: postgres
@@ -7,36 +7,21 @@ spec:
   template:
     metadata:
       labels:
-        service: postgres
+        app: postgres
     spec:
       containers:
         - name: postgres
-          image: postgres:10.1
+          image: postgres:10.4
+          imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5432
-          env:
-            - name: POSTGRES_DB
-              value: db0
-            - name: POSTGRES_USER
-              value: mendix
-            - name: POSTGRES_PASSWORD
-              value: mendix
+          envFrom:
+            - configMapRef:
+                name: postgres-config
           volumeMounts:
-            - mountPath: "/var/lib/postgresql/data"
-              name: "mendix-pgdata"
+            - mountPath: /var/lib/postgresql/data
+              name: postgredb
       volumes:
-        - hostPath:
-            path: "/home/docker/pgdata"
-          name: mendix-pgdata
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: postgres-service
-spec:
-  type: ClusterIP
-  ports:
-    - port: 5432
-  selector:
-    service: postgres
----
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
