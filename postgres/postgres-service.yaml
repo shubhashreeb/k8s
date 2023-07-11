@@ -4,6 +4,7 @@ metadata:
   name: postgres
   labels:
     app: postgres
+  namespace: postgres
 spec:
   type: NodePort
   ports:

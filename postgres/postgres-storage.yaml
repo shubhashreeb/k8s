@@ -5,6 +5,7 @@ metadata:
   labels:
     type: local
     app: postgres
+  namespace: postgres
 spec:
   storageClassName: manual
   capacity:
