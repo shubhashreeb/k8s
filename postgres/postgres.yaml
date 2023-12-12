@@ -17,13 +17,17 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:10.4
+          image: postgres:latest
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5432
-          envFrom:
-            - configMapRef:
-                name: postgres-config
+          env:
+          - name: POSTGRES_USER
+            value: pgadmin
+          - name: POSTGRES_PASSWORD
+            value: admin123
+          - name: POSTGRES_DB
+            value: postgresdb
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgredb
